@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 # --- Configuration ---
-API_KEY = "AIzaSyDvmJ9jplbvhBuQWh1KrVzFdKwMEyasXrY"
+API_KEY = "AIzaSyCBJd2HOx9wQamZg8ZSnnjMLI8oxAa3ncs"
 configure(api_key=API_KEY)
 
 # --- Initialize FastAPI App ---

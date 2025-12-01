@@ -9,7 +9,7 @@ export function ResultPage() {
   // Get the 'data' parameter from the URL
   const dataString = searchParams.get('data');
 
-  // If there's no data, show an error message
+  // If there's no data at all, show an error message
   if (!dataString) {
     return (
       <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
@@ -32,6 +32,40 @@ export function ResultPage() {
 
   // Parse the JSON string from the URL back into an object
   const transactionData = JSON.parse(decodeURIComponent(dataString));
+
+  // --- THIS IS THE CRITICAL FIX ---
+  // Check if the response from the backend contains an error.
+  // If so, display a specific error message instead of trying to render T-accounts.
+  if (transactionData.error) {
+    return (
+      <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
+        <div className="bg-white p-8 rounded-2xl shadow-large w-full max-w-2xl text-center border border-red-100">
+          <div className="mx-auto bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+            <AlertCircle className="w-8 h-8 text-red-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-red-700 font-heading">Erreur du Serveur</h2>
+          <p className="mt-4 text-neutral-700">L'IA a rencontré un problème lors du traitement de votre demande.</p>
+          
+          {/* Optional: Show the raw error for debugging */}
+          <details className="mt-4 text-left">
+            <summary className="cursor-pointer font-semibold text-neutral-600">Voir les détails de l'erreur</summary>
+            <pre className="mt-2 p-4 bg-gray-100 rounded text-sm text-red-800 overflow-auto">
+              {JSON.stringify(transactionData, null, 2)}
+            </pre>
+          </details>
+
+          <button
+            onClick={() => navigate('/')}
+            className="mt-8 px-6 py-3 bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-xl hover:from-primary-700 hover:to-secondary-700 transition-all duration-300 shadow-soft"
+          >
+            Retour
+          </button>
+        </div>
+      </div>
+    );
+  }
+  // --- END OF CRITICAL FIX ---
+
 
   return (
     <div className="min-h-[calc(100vh-4rem)]">
@@ -77,13 +111,10 @@ export function ResultPage() {
             </p>
           </div>
 
-          {/* FIXED T-Accounts Grid - Properly Centered */}
+          {/* T-Accounts Grid */}
           <div className="relative mb-12">
-            {/* Decorative background */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary-50/20 to-secondary-50/20 rounded-3xl" />
-            
             <div className="relative bg-white rounded-2xl border border-neutral-200 shadow-large p-8">
-              {/* Dynamic Grid Layout Based on Number of Accounts */}
               <div className="flex justify-center w-full">
                 <div className={`w-full ${transactionData.accounts.length <= 2 ? 'max-w-2xl' : 'max-w-6xl'}`}>
                   <div className={`grid gap-8 ${
@@ -102,7 +133,6 @@ export function ResultPage() {
                       >
                         <div className="w-full max-w-sm mx-auto transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
                           <div className="relative">
-                            {/* Decorative accent */}
                             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-t-xl" />
                             <TAccount account={account} />
                           </div>
