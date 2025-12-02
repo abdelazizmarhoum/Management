@@ -54,7 +54,7 @@ Managment/
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/abdelazizmarhoum/Management.git
    cd Managment
    ```
 
@@ -83,7 +83,7 @@ Managment/
    cd backend
    uvicorn main:app --reload
    ```
-   The backend will be available at `http://localhost:8000`
+   The backend will be available at `http://127.0.0.1:8000`
 
 2. **Start the Frontend Development Server:**
    ```bash
